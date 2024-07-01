@@ -12,10 +12,10 @@ class UserModel {
     });
   }
 
-  static addNewUser(kana, meaning_summary, short_meaning_summary) {
+  static addNewUser(kana, meaning_summary, short_meaning_summary, writings) {
     return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary) VALUES (?, ?, ?)';
-      db.query(query, [kana, meaning_summary, short_meaning_summary], (error, results) => {
+      const query = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary, writings) VALUES (?, ?, ?, ?)';
+      db.query(query, [kana, meaning_summary, short_meaning_summary, writings], (error, results) => {
         if (error) {
           return reject(error);
         }
@@ -36,10 +36,10 @@ class UserModel {
     });
   }
 
-  static editUser(id, kana, meaning_summary, short_meaning_summary) {
+  static editUser(id, kana, meaning_summary, short_meaning_summary, writings) {
     return new Promise((resolve, reject) => {
-      const query = 'UPDATE words SET kana = ?, meaning_summary = ?, short_meaning_summary = ? WHERE id = ?';
-      db.query(query, [kana, meaning_summary, short_meaning_summary, id], (error, results) => {
+      const query = 'UPDATE words SET kana = ?, meaning_summary = ?, short_meaning_summary = ?, writings = ? WHERE id = ?';
+      db.query(query, [kana, meaning_summary, short_meaning_summary, writings, id], (error, results) => {
         if (error) {
           return reject(error);
         }
@@ -49,12 +49,20 @@ class UserModel {
   }
 
   static async insertWords(words) {
-    const sql = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary) VALUES ?';
-    const values = words.map(word => [word.Kana, word.MeaningSummary, word.ShortMeaningSummary]);
-
+    const sql = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary, writings) VALUES ?';
+    const values = words.map(word => [
+      word.Kana,
+      word.MeaningSummary,
+      word.ShortMeaningSummary,
+      JSON.stringify(word.Writings)  // تحويل writings إلى JSON
+    ]);
+  
+    console.log('Values to insert:', values);  // التحقق من القيم قبل الإدراج
+  
     return new Promise((resolve, reject) => {
       db.query(sql, [values], (error, results) => {
         if (error) {
+          console.error('Database error:', error);  // تسجيل خطأ قاعدة البيانات
           return reject(error);
         }
         resolve(results);
@@ -62,16 +70,17 @@ class UserModel {
     });
   }
   
+
   static async searchWords(term, page, mode) {
     const offset = page * 10; // Assuming each page contains 10 results
     const searchQuery = `
       SELECT * FROM words
-      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ?
+      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ? OR writings LIKE ?
       LIMIT 10 OFFSET ?`;
     const countQuery = `
       SELECT COUNT(*) AS total FROM words
-      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ?`;
-    const values = [`%${term}%`, `%${term}%`, `%${term}%`];
+      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ? OR writings LIKE ?`;
+    const values = [`%${term}%`, `%${term}%`, `%${term}%`, `%${term}%`];  // تعديل المتغير الأخير
 
     try {
       const [searchResults, countResults] = await Promise.all([

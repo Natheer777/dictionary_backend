@@ -11,9 +11,9 @@ class UserController {
   }
 
   static async addUser(req, res) {
-    const { kana, meaning_summary, short_meaning_summary } = req.body;
+    const { kana, meaning_summary, short_meaning_summary, writings } = req.body;
     try {
-      const answer = await userModel.addNewUser(kana, meaning_summary, short_meaning_summary);
+      const answer = await userModel.addNewUser(kana, meaning_summary, short_meaning_summary, writings);
       if (answer) {
         res.send("Add successfully");
       } else {
@@ -43,10 +43,10 @@ class UserController {
   }
 
   static async editUser(req, res) {
-    const { id, kana, meaning_summary, short_meaning_summary } = req.body;
+    const { id, kana, meaning_summary, short_meaning_summary, writings } = req.body;
     try {
       if (id) {
-        const editAnswer = await userModel.editUser(id, kana, meaning_summary, short_meaning_summary);
+        const editAnswer = await userModel.editUser(id, kana, meaning_summary, short_meaning_summary, writings);
         if (editAnswer) {
           res.send("Edit done");
         } else {
@@ -64,14 +64,20 @@ class UserController {
     if (!words || !Array.isArray(words)) {
       return res.status(400).json({ error: 'Invalid data format, expected an array of words' });
     }
-
+  
+    // إضافة التحقق من البيانات
+    console.log('Received words:', words);
+  
     try {
       const result = await userModel.insertWords(words);
       res.status(200).json({ message: 'Data inserted successfully', results: result });
     } catch (error) {
+      console.error('Error inserting data:', error);
       res.status(500).json({ error: 'Error inserting data' });
     }
   }
+  
+  
   static async searchWords(req, res) {
     const { Term, Page, Mode } = req.body;
     try {
@@ -82,7 +88,7 @@ class UserController {
         res.status(404).send({ message: 'No words found' });
       }
     } catch (error) {
-      res.status(500).send({ error: 'Error searching words' });
+      res.status(500).send({ error: 'Error searching word' });
     }
   }
 }
