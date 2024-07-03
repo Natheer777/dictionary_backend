@@ -12,10 +12,10 @@ class UserModel {
     });
   }
 
-  static addNewUser(kana, meaning_summary, short_meaning_summary, writings) {
+  static addNewUser(kana, meaning, short, writings) {
     return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary, writings) VALUES (?, ?, ?, ?)';
-      db.query(query, [kana, meaning_summary, short_meaning_summary, writings], (error, results) => {
+      const query = 'INSERT INTO words (kana, meaning, short, writings) VALUES (?, ?, ?, ?)';
+      db.query(query, [kana, meaning, short, writings], (error, results) => {
         if (error) {
           return reject(error);
         }
@@ -36,10 +36,10 @@ class UserModel {
     });
   }
 
-  static editUser(id, kana, meaning_summary, short_meaning_summary, writings) {
+  static editUser(id, kana, meaning, short, writings) {
     return new Promise((resolve, reject) => {
-      const query = 'UPDATE words SET kana = ?, meaning_summary = ?, short_meaning_summary = ?, writings = ? WHERE id = ?';
-      db.query(query, [kana, meaning_summary, short_meaning_summary, writings, id], (error, results) => {
+      const query = 'UPDATE words SET kana = ?, meaning = ?, short = ?, writings = ? WHERE id = ?';
+      db.query(query, [kana, meaning, short, writings, id], (error, results) => {
         if (error) {
           return reject(error);
         }
@@ -49,7 +49,7 @@ class UserModel {
   }
 
   static async insertWords(words) {
-    const sql = 'INSERT INTO words (kana, meaning_summary, short_meaning_summary, writings) VALUES ?';
+    const sql = 'INSERT INTO words (kana, meaning, short, writings) VALUES ?';
     const values = words.map(word => [
       word.Kana,
       word.MeaningSummary,
@@ -75,11 +75,11 @@ class UserModel {
     const offset = page * 10; // Assuming each page contains 10 results
     const searchQuery = `
       SELECT * FROM words
-      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ? OR writings LIKE ?
+      WHERE kana LIKE ? OR meaning LIKE ? OR short LIKE ? OR writings LIKE ?
       LIMIT 10 OFFSET ?`;
     const countQuery = `
       SELECT COUNT(*) AS total FROM words
-      WHERE kana LIKE ? OR meaning_summary LIKE ? OR short_meaning_summary LIKE ? OR writings LIKE ?`;
+      WHERE kana LIKE ? OR meaning LIKE ? OR short LIKE ? OR writings LIKE ?`;
     const values = [`%${term}%`, `%${term}%`, `%${term}%`, `%${term}%`];  // تعديل المتغير الأخير
 
     try {

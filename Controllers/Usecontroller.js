@@ -11,9 +11,9 @@ class UserController {
   }
 
   static async addUser(req, res) {
-    const { kana, meaning_summary, short_meaning_summary, writings } = req.body;
+    const { kana, meaning, short, writings } = req.body;
     try {
-      const answer = await userModel.addNewUser(kana, meaning_summary, short_meaning_summary, writings);
+      const answer = await userModel.addNewUser(kana, meaning, short, writings);
       if (answer) {
         res.send("Add successfully");
       } else {
@@ -43,10 +43,10 @@ class UserController {
   }
 
   static async editUser(req, res) {
-    const { id, kana, meaning_summary, short_meaning_summary, writings } = req.body;
+    const { id, kana, meaning, short, writings } = req.body;
     try {
       if (id) {
-        const editAnswer = await userModel.editUser(id, kana, meaning_summary, short_meaning_summary, writings);
+        const editAnswer = await userModel.editUser(id, kana, meaning, short, writings);
         if (editAnswer) {
           res.send("Edit done");
         } else {
