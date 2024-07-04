@@ -31,7 +31,7 @@ app.post('/api/excel', async (req, res) => {
       const workbook = xlsx.read(response.data, { type: 'buffer' });
 
       // أسماء أو فهارس الأوراق المطلوبة
-      const sheetNamesOrIndexes = ['shenjki']; // هنا تضع أسماء أو فهارس الأوراق المطلوبة
+      const sheetNamesOrIndexes = ['sawa']; // هنا تضع أسماء أو فهارس الأوراق المطلوبة
 
       let jsonData = [];
 
