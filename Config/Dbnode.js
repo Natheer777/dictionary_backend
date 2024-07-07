@@ -63,7 +63,7 @@ function updateDataEverySecond() {
     DELETE t1 FROM words t1
     INNER JOIN words t2 
     WHERE 
-      t1.id < t2.id AND 
+      t1.id > t2.id AND 
       t1.writings = t2.writings
   `;
 
