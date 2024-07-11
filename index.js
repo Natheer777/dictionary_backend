@@ -111,11 +111,17 @@ const CryptoJS = require('crypto-js');
 const app = express();
 const port = process.env.PORT || 3010;
 
+// Middleware setup
 app.use(cors());
-app.use(router);
 app.use(bodyParser.json());
-app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use(router);
 
 app.post('/api/excel', async (req, res) => {
   try {
@@ -163,18 +169,20 @@ app.post('/api/excel', async (req, res) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Routes for serving HTML files
 app.get('/adduser', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'input_form.html'));
 });
+
 app.get('/edite', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'edite.html'));
 });
+
 app.get('/delete', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'delete.html'));
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
