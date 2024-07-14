@@ -140,7 +140,7 @@ app.post('/api/excel', async (req, res) => {
       if (sheet) {
         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 1 });
         const headers = data[0];
-        const rows = data.slice(1);
+        // const rows = data.slice(1);
         const formattedData = rows.map(row => {
           let obj = {};
           row.forEach((cell, i) => {
