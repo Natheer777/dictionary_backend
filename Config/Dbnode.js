@@ -83,7 +83,7 @@ function updateDataEverySecond() {
         console.log('تم حذف البيانات المتكررة بنجاح');
       });
     });
-  }, 1000); // كل ثانية
+  }, 1000); 
 }
 
 updateDataEverySecond();

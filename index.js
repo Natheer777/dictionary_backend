@@ -3,25 +3,19 @@ const router = require('./Routers/Route');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const mysql = require('mysql2');
 const axios = require('axios');
 const xlsx = require('xlsx');
 const CryptoJS = require('crypto-js');
 const app = express();
 const port = process.env.PORT || 3010;
 
-// Middleware setup
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-
-// Static files
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Routes
 app.use(router);
+app.use(bodyParser.json());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Original API route
 app.post('/api/excel', async (req, res) => {
   try {
     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
@@ -39,7 +33,7 @@ app.post('/api/excel', async (req, res) => {
       if (sheet) {
         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
         const headers = data[0];
-        const rows = data.slice(1); // تجاهل الصف الأول لأنه يحتوي على العناوين
+        const rows = data.slice(1);
         const formattedData = rows.map(row => {
           let obj = {};
           row.forEach((cell, i) => {
@@ -58,7 +52,7 @@ app.post('/api/excel', async (req, res) => {
       TotalPages: Math.ceil(jsonData.length / 10)
     };
 
-    const secretKey = 'sawa2020!';
+    const secretKey = 'sawa2020!'; // استخدم مفتاح سري قوي في الإنتاج
     const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
 
     res.json({ data: encryptedResult });
@@ -68,21 +62,18 @@ app.post('/api/excel', async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes for serving HTML files
 app.get('/adduser', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'input_form.html'));
 });
-
 app.get('/edite', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'edite.html'));
 });
-
 app.get('/delete', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'delete.html'));
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
