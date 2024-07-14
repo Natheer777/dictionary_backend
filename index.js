@@ -138,9 +138,9 @@ app.post('/api/excel', async (req, res) => {
       const sheet = workbook.Sheets[sheetName];
 
       if (sheet) {
-        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 1 });
+        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
         const headers = data[0];
-        const rows = data[0];
+        const rows = data;
         const formattedData = rows.map(row => {
           let obj = {};
           row.forEach((cell, i) => {
