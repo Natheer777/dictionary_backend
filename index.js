@@ -6,7 +6,6 @@ const path = require('path');
 const axios = require('axios');
 const xlsx = require('xlsx');
 const CryptoJS = require('crypto-js');
-
 const app = express();
 const port = process.env.PORT || 3010;
 
@@ -38,9 +37,9 @@ app.post('/api/excel', async (req, res) => {
       const sheet = workbook.Sheets[sheetName];
 
       if (sheet) {
-        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 1 });
+        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
         const headers = data[0];
-        const rows = data.slice(1);
+        const rows = data.slice(1); // تجاهل الصف الأول لأنه يحتوي على العناوين
         const formattedData = rows.map(row => {
           let obj = {};
           row.forEach((cell, i) => {
@@ -59,7 +58,7 @@ app.post('/api/excel', async (req, res) => {
       TotalPages: Math.ceil(jsonData.length / 10)
     };
 
-    const secretKey = 'sawa2020!'; // استخدم مفتاح سري قوي في الإنتاج
+    const secretKey = 'sawa2020!';
     const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
 
     res.json({ data: encryptedResult });
@@ -69,17 +68,6 @@ app.post('/api/excel', async (req, res) => {
   }
 });
 
-// Fake route for API
-app.post('/allData', async (req, res) => {
-  try {
-    // Redirect to the original route internally
-    req.url = '/api/excel';
-    app._router.handle(req, res);
-  } catch (error) {
-    console.error('Error handling the fake endpoint:', error.message);
-    res.status(500).send('Error handling the fake endpoint.');
-  }
-});
 
 // Routes for serving HTML files
 app.get('/adduser', (req, res) => {
