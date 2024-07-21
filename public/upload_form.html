@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Images and Audio Examples</title>
+</head>
+<body>
+  <h1>Upload Images and Audio Exampless</h1>
+  <form id="uploadForm" enctype="multipart/form-data" method="POST" action="https://script.google.com/macros/s/AKfycbwqy3oaBHNtQBrLyscIKs3HscIJNmaUN3Btuidmdc62wauNvcykq_U3x4Fp8P6yR06Upg/exec">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id" required><br><br>
+    
+    <label for="imageUrl">Image URL:</label>
+    <input type="text" id="imageUrl" name="imageUrl" ><br><br>
+    
+    <label for="audioUrl">Audio URL:</label>
+    <input type="text" id="audioUrl" name="audioUrl" ><br><br>
+
+    <label for="category">Category:</label>
+    <input type="text" id="category" name="category" required><br><br>
+    
+    <button type="submit">Upload</button>
+  </form>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      
+      const response = await fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      });
+
+      if (response.ok) {
+        alert('Files uploaded and Excel updated successfully!');
+      } else {
+        alert('Failed to upload files.');
+      }
+    });
+  </script>
+</body>
+</html>
