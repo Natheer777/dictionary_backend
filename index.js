@@ -16,51 +16,51 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// app.post('/api/excel', async (req, res) => {
-//   try {
-//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-//       responseType: 'arraybuffer',
-//     });
+app.post('/api/excel', async (req, res) => {
+  try {
+    const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
+      responseType: 'arraybuffer',
+    });
 
-//     const workbook = xlsx.read(response.data, { type: 'buffer' });
-//     const sheetNamesOrIndexes = ['sawa'];
-//     let jsonData = [];
+    const workbook = xlsx.read(response.data, { type: 'buffer' });
+    const sheetNamesOrIndexes = ['sawa'];
+    let jsonData = [];
 
-//     sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
-//       const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
-//       const sheet = workbook.Sheets[sheetName];
+    sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
+      const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
+      const sheet = workbook.Sheets[sheetName];
 
-//       if (sheet) {
-//         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-//         const headers = data[0];
-//         const rows = data.slice(1);
-//         const formattedData = rows.map(row => {
-//           let obj = {};
-//           row.forEach((cell, i) => {
-//             obj[headers[i]] = cell;
-//           });
-//           return obj;
-//         });
+      if (sheet) {
+        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
+        const headers = data[0];
+        const rows = data.slice(1);
+        const formattedData = rows.map(row => {
+          let obj = {};
+          row.forEach((cell, i) => {
+            obj[headers[i]] = cell;
+          });
+          return obj;
+        });
 
-//         jsonData = jsonData.concat(formattedData);
-//       }
-//     });
+        jsonData = jsonData.concat(formattedData);
+      }
+    });
 
-//     const result = {
-//       Items: jsonData,
-//       TotalResults: jsonData.length,
-//       TotalPages: Math.ceil(jsonData.length / 10)
-//     };
+    const result = {
+      Items: jsonData,
+      TotalResults: jsonData.length,
+      TotalPages: Math.ceil(jsonData.length / 10)
+    };
 
-//     const secretKey = 'sawa2020!'; // استخدم مفتاح سري قوي في الإنتاج
-//     const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
+    const secretKey = 'sawa2020!'; // استخدم مفتاح سري قوي في الإنتاج
+    const encryptedResult = CryptoJS.AES.encrypt(JSON.stringify(result), secretKey).toString();
 
-//     res.json({ data: encryptedResult });
-//   } catch (error) {
-//     console.error('Error fetching or processing the Excel file:', error.message);
-//     res.status(500).send('Error fetching or processing the Excel file.');
-//   }
-// });
+    res.json({ data: encryptedResult });
+  } catch (error) {
+    console.error('Error fetching or processing the Excel file:', error.message);
+    res.status(500).send('Error fetching or processing the Excel file.');
+  }
+});
 
 
 // app.post('/api/excel', async (req, res) => {
@@ -108,48 +108,48 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.post('/api/excel', async (req, res) => {
-  try {
-    const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-      responseType: 'arraybuffer',
-    });
+// app.post('/api/excel', async (req, res) => {
+//   try {
+//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
+//       responseType: 'arraybuffer',
+//     });
 
-    const workbook = xlsx.read(response.data, { type: 'buffer' });
-    const sheetNamesOrIndexes = ['sawa'];
-    let jsonData = [];
+//     const workbook = xlsx.read(response.data, { type: 'buffer' });
+//     const sheetNamesOrIndexes = ['sawa'];
+//     let jsonData = [];
 
-    sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
-      const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
-      const sheet = workbook.Sheets[sheetName];
+//     sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
+//       const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
+//       const sheet = workbook.Sheets[sheetName];
 
-      if (sheet) {
-        const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-        const headers = data[0];
-        const rows = data.slice(1);
-        const formattedData = rows.map(row => {
-          let obj = {};
-          headers.forEach((header, i) => {
-            obj[header] = row[i] || '';
-          });
-          return obj;
-        });
+//       if (sheet) {
+//         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
+//         const headers = data[0];
+//         const rows = data.slice(1);
+//         const formattedData = rows.map(row => {
+//           let obj = {};
+//           headers.forEach((header, i) => {
+//             obj[header] = row[i] || '';
+//           });
+//           return obj;
+//         });
 
-        jsonData = jsonData.concat(formattedData);
-      }
-    });
+//         jsonData = jsonData.concat(formattedData);
+//       }
+//     });
 
-    const result = {
-      Items: jsonData,
-      TotalResults: jsonData.length,
-      TotalPages: Math.ceil(jsonData.length / 10)
-    };
+//     const result = {
+//       Items: jsonData,
+//       TotalResults: jsonData.length,
+//       TotalPages: Math.ceil(jsonData.length / 10)
+//     };
 
-    res.json({ data: result });
-  } catch (error) {
-    console.error('Error fetching or processing the Excel file:', error.message);
-    res.status(500).send('Error fetching or processing the Excel file.');
-  }
-});
+//     res.json({ data: result });
+//   } catch (error) {
+//     console.error('Error fetching or processing the Excel file:', error.message);
+//     res.status(500).send('Error fetching or processing the Excel file.');
+//   }
+// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
