@@ -108,7 +108,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.put('/api/excel', async (req, res) => {
+app.post('/api/excel', async (req, res) => {
   try {
     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
       responseType: 'arraybuffer',
