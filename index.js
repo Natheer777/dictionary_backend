@@ -11,6 +11,9 @@ const app = express();
 const port = process.env.PORT || 3010;
 
 app.use(cors());
+app.use(cors({
+  origin: 'https://natheer777.github.io'
+}));
 app.use(router);
 app.use(bodyParser.json());
 app.use(express.json());
