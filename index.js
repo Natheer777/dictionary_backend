@@ -62,10 +62,6 @@ app.post('/api/excel', async (req, res) => {
   }
 });
 
-router.post('/insertWords', router);
-
-
-
 
 app.use(express.static(path.join(__dirname, 'public')));
 
