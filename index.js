@@ -11,9 +11,6 @@ const app = express();
 const port = process.env.PORT || 3010;
 
 app.use(cors());
-app.use(cors({
-  origin: 'https://natheer777.github.io'
-}));
 app.use(router);
 app.use(bodyParser.json());
 app.use(express.json());
@@ -65,94 +62,10 @@ app.post('/api/excel', async (req, res) => {
   }
 });
 
-
-// app.post('/api/excel', async (req, res) => {
-//   try {
-//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-//       responseType: 'arraybuffer',
-//     });
-
-//     const workbook = xlsx.read(response.data, { type: 'buffer' });
-//     const sheetNamesOrIndexes = ['sawa'];
-//     let jsonData = [];
-
-//     sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
-//       const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
-//       const sheet = workbook.Sheets[sheetName];
-
-//       if (sheet) {
-//         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-//         const headers = data[0];
-//         const rows = data.slice(1);
-//         const formattedData = rows.map(row => {
-//           let obj = {};
-//           row.forEach((cell, i) => {
-//             obj[headers[i]] = cell;
-//           });
-//           return obj;
-//         });
-
-//         jsonData = jsonData.concat(formattedData);
-//       }
-//     });
-
-//     const result = {
-//       Items: jsonData,
-//       TotalResults: jsonData.length,
-//       TotalPages: Math.ceil(jsonData.length / 10)
-//     };
-
-//     res.json({ data: result });
-//   } catch (error) {
-//     console.error('Error fetching or processing the Excel file:', error.message);
-//     res.status(500).send('Error fetching or processing the Excel file.');
-//   }
-// });
+router.post('/insertWords', router);
 
 
 
-// app.post('/api/excel', async (req, res) => {
-//   try {
-//     const response = await axios.get('https://docs.google.com/spreadsheets/d/16FiJrTM8hYcqPZ6Vj2P4Jbpzck80824ldrBJiHbTxCE/export?format=xlsx', {
-//       responseType: 'arraybuffer',
-//     });
-
-//     const workbook = xlsx.read(response.data, { type: 'buffer' });
-//     const sheetNamesOrIndexes = ['sawa'];
-//     let jsonData = [];
-
-//     sheetNamesOrIndexes.forEach((sheetNameOrIndex) => {
-//       const sheetName = typeof sheetNameOrIndex === 'string' ? sheetNameOrIndex : workbook.SheetNames[sheetNameOrIndex];
-//       const sheet = workbook.Sheets[sheetName];
-
-//       if (sheet) {
-//         const data = xlsx.utils.sheet_to_json(sheet, { header: 1, range: 0 });
-//         const headers = data[0];
-//         const rows = data.slice(1);
-//         const formattedData = rows.map(row => {
-//           let obj = {};
-//           headers.forEach((header, i) => {
-//             obj[header] = row[i] || '';
-//           });
-//           return obj;
-//         });
-
-//         jsonData = jsonData.concat(formattedData);
-//       }
-//     });
-
-//     const result = {
-//       Items: jsonData,
-//       TotalResults: jsonData.length,
-//       TotalPages: Math.ceil(jsonData.length / 10)
-//     };
-
-//     res.json({ data: result });
-//   } catch (error) {
-//     console.error('Error fetching or processing the Excel file:', error.message);
-//     res.status(500).send('Error fetching or processing the Excel file.');
-//   }
-// });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
