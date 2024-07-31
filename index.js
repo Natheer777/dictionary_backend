@@ -9,7 +9,9 @@ const xlsx = require('xlsx');
 const CryptoJS = require('crypto-js');
 const app = express();
 const port = process.env.PORT || 800;
-
+app.use(cors({
+  origin: 'https://natheer777.github.io'
+}));
 
 app.use(cors());
 app.use(bodyParser.json());
