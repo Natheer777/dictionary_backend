@@ -64,10 +64,10 @@ class UserController {
     if (!words || !Array.isArray(words)) {
       return res.status(400).json({ error: 'Invalid data format, expected an array of words' });
     }
-  
+
     // إضافة التحقق من البيانات
     console.log('Received words:', words);
-  
+
     try {
       const result = await userModel.insertWords(words);
       res.status(200).json({ message: 'Data inserted successfully', results: result });
@@ -76,7 +76,6 @@ class UserController {
       res.status(500).json({ error: 'Error inserting data' });
     }
   }
-  
   
   static async searchWords(req, res) {
     const { Term, Page, Mode } = req.body;

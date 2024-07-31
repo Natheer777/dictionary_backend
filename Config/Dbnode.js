@@ -3,7 +3,8 @@ const db = mysql.createPool({
   host: 'srv621.hstgr.io',
   user: 'u229294786_UKHrI',
   password: 'Sawa2020!',
-  database: 'u229294786_JZfqq'
+  database: 'u229294786_JZfqq',
+
   // host: 'betejqbmtak0eaj63ctn-mysql.services.clever-cloud.com',
   // user: 'ufeuignwbwarfssi',
   // port: '3306',

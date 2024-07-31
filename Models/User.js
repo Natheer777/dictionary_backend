@@ -48,27 +48,30 @@ class UserModel {
     });
   }
 
-  static async insertWords(words) {
-    const sql = 'INSERT INTO words (kana, meaning, short, writings) VALUES ?';
-    const values = words.map(word => [
-      word.Kana,
-      word.MeaningSummary,
-      word.ShortMeaningSummary,
-      JSON.stringify(word.Writings)  // تحويل writings إلى JSON
-    ]);
+
+    static async insertWords(words) {
+      const sql = 'INSERT INTO words (kana, meaning, short, writings) VALUES ?';
+      const values = words.map(word => [
+        word.Kana,
+        word.MeaningSummary,
+        word.ShortMeaningSummary,
+        JSON.stringify(word.Writings)  // تحويل writings إلى JSON
+      ]);
   
-    console.log('Values to insert:', values);  // التحقق من القيم قبل الإدراج
+      console.log('Values to insert:', values);  // التحقق من القيم قبل الإدراج
   
-    return new Promise((resolve, reject) => {
-      db.query(sql, [values], (error, results) => {
-        if (error) {
-          console.error('Database error:', error);  // تسجيل خطأ قاعدة البيانات
-          return reject(error);
-        }
-        resolve(results);
+      return new Promise((resolve, reject) => {
+        db.query(sql, [values], (error, results) => {
+          if (error) {
+            console.error('Database error:', error);  // تسجيل خطأ قاعدة البيانات
+            return reject(error);
+          }
+          resolve(results);
+        });
       });
-    });
-  }
+    }
+  
+  
   
 
   static async searchWords(term, page, mode) {

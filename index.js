@@ -8,13 +8,17 @@ const axios = require('axios');
 const xlsx = require('xlsx');
 const CryptoJS = require('crypto-js');
 const app = express();
-const port = process.env.PORT || 3010;
+const port = process.env.PORT || 800;
+
 
 app.use(cors());
-app.use(router);
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(router);
+
+
 
 app.post('/api/excel', async (req, res) => {
   try {
@@ -61,6 +65,7 @@ app.post('/api/excel', async (req, res) => {
     res.status(500).send('Error fetching or processing the Excel file.');
   }
 });
+
 
 
 app.use(express.static(path.join(__dirname, 'public')));
