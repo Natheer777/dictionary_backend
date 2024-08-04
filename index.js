@@ -10,9 +10,7 @@ const CryptoJS = require('crypto-js');
 const app = express();
 const port = process.env.PORT || 65003;
 app.use(cors({
-  origin: 'https://natheer777.github.io',
-  origin: 'https://ajls.online'
-  
+  origin: 'https://natheer777.github.io'
   
 }));
 
