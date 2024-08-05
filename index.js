@@ -11,7 +11,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors({
   origin: 'https://natheer777.github.io',
-  origin: 'http://localhost:5174'
+  origin: 'http://localhost:5174',
+  origin: 'https://ajls.online'
   
 }));
 
